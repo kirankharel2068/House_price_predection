@@ -1,6 +1,6 @@
 # House_price_predection
 
-This project is done to make housing predection implementing various Machine libraries. 
+This project is done to make housing predection implementing various Machine Learning libraries. 
 I have tried to go through various phases of Data science life cycle to make the predections which are as follows:
 1.  Data Import and Exploratory Data Analysis
     In this stage I have imported data from local directory (main source: Kaggle) and then performed EDA to have a better understanding
