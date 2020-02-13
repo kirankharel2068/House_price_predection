@@ -102,10 +102,17 @@ def one_hot_encoding(df,multcolumns):
     copy = pd.concat([df, copy], axis = 1)
     return copy
 
+def rmsle(y_true, y_pred):
+    diffs = np.log(y_true+1)-np.log(y_pred+1)
+    squares = np.power(diffs, 2)
+    err = np.sqrt(np.mean(squares))
+    return err
+
 def evaluate_model(y_pred, y_test):
     r2_measure = r2_score(y_test, y_pred)
     RMSE = np.sqrt(mean_squared_error(y_test, y_pred))
-    return r2_measure, RMSE
+    rmsle_err = rmsle(y_pred, y_test)
+    return r2_measure, RMSE, rmsle_err
 
 def fit_models(X_train, y_train, X_test, y_test, models):
     #list to store performance of the models
@@ -114,9 +121,9 @@ def fit_models(X_train, y_train, X_test, y_test, models):
         print('Fitting: \t{}'.format(key))
         value.fit(np.array(X_train), np.array(y_train))
         y_pred = value.predict(np.array(X_test))
-        r2, rmse = evaluate_model(y_pred, y_test)
+        r2, rmse, rmsle_err = evaluate_model(y_pred, y_test)
         print('Done!')
-        df_temp = pd.DataFrame({'model':[key],'rmse':[rmse], 'r2':[r2]})
+        df_temp = pd.DataFrame({'model':[key],'rmse':[rmse], 'r2':[r2], 'rmsle':[rmsle_err]})
         df_eval = df_eval.append(df_temp)
     
     print('=== Fitting Completed ! ====')
